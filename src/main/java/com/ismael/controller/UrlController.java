@@ -1,8 +1,9 @@
 package com.ismael.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,6 @@ import com.ismael.service.UrlService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/urls")
 public class UrlController {
 
 	private final UrlService urlService;
@@ -24,7 +24,7 @@ public class UrlController {
 		this.urlService = urlService;
 	}
 	
-	@PostMapping("/shorten")
+	@PostMapping("/api/urls/shorten")
 	public ResponseEntity<UrlResponseDto> createShortUrl(@Valid @RequestBody UrlRequestDto request){
 		UrlResponseDto response = urlService.shortenUrl(request);
 		
@@ -42,6 +42,14 @@ public class UrlController {
         );
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseWithFullUrl);
+	}
+	
+	@GetMapping("/{hash}")
+	public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String hash){
+		
+		String originalUrl = urlService.getOriginalUrl(hash);
+		
+		return ResponseEntity.status(HttpStatus.FOUND).location(java.net.URI.create(originalUrl)).build();
 	}
 	
 	

@@ -2,6 +2,7 @@ package com.ismael.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.stereotype.Service;
@@ -59,5 +60,26 @@ public class UrlService {
 		UrlResponseDto response = new UrlResponseDto(request.originalUrl(), shortUrl, expiresAt);
 		
 		return response;
+	}
+	
+	public String getOriginalUrl(String hash) {
+		
+		Optional<UrlEntity> optionalUrl = urlRepository.findByShortHash(hash);
+		
+		if(optionalUrl.isEmpty()) {
+			throw new RuntimeException("URL Not Found");
+		}
+		
+		UrlEntity entity = optionalUrl.get();
+		
+		if(Instant.now().isAfter(entity.getExpiresAt())) {
+			throw new RuntimeException("URL Expired");
+		}
+		
+		entity.setClickCount(entity.getClickCount() + 1);
+		
+		urlRepository.save(entity);
+		
+		return entity.getOriginalUrl();
 	}
 }
