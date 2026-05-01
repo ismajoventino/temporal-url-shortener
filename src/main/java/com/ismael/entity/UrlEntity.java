@@ -30,7 +30,7 @@ public class UrlEntity {
 	private Instant expiresAt;
 	
 	@Column(nullable = false)
-	private Integer clickCount = 0;
+	private Integer clickCount;
 
 	public UrlEntity() {
 		super();
