@@ -55,7 +55,7 @@ public class UrlController {
 	    return ResponseEntity.ok(stats);
 	}
 	
-	@GetMapping("/{hash}")
+	@GetMapping("/{hash:[a-zA-Z0-9]+}")
 	public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String hash){
 		
 		String originalUrl = urlService.getOriginalUrl(hash);
