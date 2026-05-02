@@ -43,9 +43,15 @@ public class UrlService {
 	}
 	
 	public UrlResponseDto shortenUrl(UrlRequestDto request) {
+		java.util.List<Integer> allowedMinutes = java.util.List.of(15, 30, 60, 300, 1440, 2880);
+		
+		if (!allowedMinutes.contains(request.expirationInMinutes())) {
+	        throw new RuntimeException("Invalid expiration time. Allowed values in minutes: 15, 30, 60, 300, 1440, 2880");
+	    }
+		
 		String shortUrl = generateUniqueHash();
 		Instant createdAt = Instant.now();
-		Instant expiresAt = createdAt.plus(request.expirationHours(), ChronoUnit.HOURS);
+		Instant expiresAt = createdAt.plus(request.expirationInMinutes(), ChronoUnit.MINUTES);
 		
 		UrlEntity entity = new UrlEntity();
 		

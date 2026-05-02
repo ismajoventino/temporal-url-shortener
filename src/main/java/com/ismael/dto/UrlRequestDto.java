@@ -13,7 +13,7 @@ public record UrlRequestDto(
 		String originalUrl,
 		
 		@NotNull(message = "Expiration time is required")
-		@Positive(message = "Expiration time must be a positive number of hours")
-		Long expirationHours
+		@Positive(message = "Expiration time must be a positive number")
+		Integer expirationInMinutes
 		
 ) {}
