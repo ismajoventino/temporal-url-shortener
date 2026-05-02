@@ -45,7 +45,6 @@ Snip is a full stack URL shortener with a built-in web interface. The frontend i
 | Database | MySQL |
 | Build Tool | Maven |
 | Frontend | HTML5, CSS3, Vanilla JavaScript |
-| Typography | DM Sans, DM Mono |
 
 ---
 
