@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>snip — temporary url shortener</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <div class="logo">
+        <span>snip</span>
+        <span class="logo-dot"></span>
+      </div>
+      <p class="tagline">Temporary links that expire on schedule.</p>
+    </div>
+    <a
+      href="https://github.com/ismajoventino/temporal-url-shortener"
+      target="_blank"
+      rel="noopener"
+      class="github-link"
+      aria-label="Visit repository on GitHub"
+    >
+      <img
+        src="https://cdn.simpleicons.org/github/000000"
+        alt="GitHub"
+        width="22"
+        height="22"
+      />
+      <span class="github-label">Visit Repo</span>
+    </a>
+  </div>
+</header>
+
+  <main>
+
+    <!-- ── Section 1: Create ── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-number">01</span>
+        <span class="card-title">Shorten a URL</span>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label for="long-url">Destination URL</label>
+          <input type="text" id="long-url" placeholder="https://your-very-long-url.com/goes/here" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="expiry">Expires after</label>
+          <div class="select-wrapper">
+            <select id="expiry">
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="60">1 hour</option>
+              <option value="300">5 hours</option>
+              <option value="1440" selected>24 hours</option>
+              <option value="2880">48 hours</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="shorten-btn" onclick="handleShorten()">
+          <div class="spinner"></div>
+          <span class="btn-label">Shorten</span>
+        </button>
+        <div id="shorten-error" style="display:none"></div>
+        <div id="shorten-result" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="divider">or</div>
+
+    <!-- ── Section 2: Lookup ── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-number">02</span>
+        <span class="card-title">Look up a short link</span>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <label for="short-code">Short code</label>
+          <input type="text" id="short-code" placeholder="e.g. aB3xZ9 or full link" maxlength="2048" autocomplete="off" />
+        </div>
+        <button class="btn btn-primary" id="lookup-btn" onclick="handleLookup()">
+          <div class="spinner"></div>
+          <span class="btn-label">Look up</span>
+        </button>
+        <div id="lookup-error" style="display:none"></div>
+        <div id="lookup-result" style="display:none"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    Links expire automatically. No account needed.
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
