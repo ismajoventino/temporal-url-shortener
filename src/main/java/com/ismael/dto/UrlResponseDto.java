@@ -6,6 +6,7 @@ public record UrlResponseDto(
 		
 		String originalUrl,
 		String shortUrl,
-		Instant expiresAt
+		Instant expiresAt,
+		Integer clickCount
 		
 ) {}

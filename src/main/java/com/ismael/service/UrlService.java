@@ -2,6 +2,7 @@ package com.ismael.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -43,7 +44,7 @@ public class UrlService {
 	}
 	
 	public UrlResponseDto shortenUrl(UrlRequestDto request) {
-		java.util.List<Integer> allowedMinutes = java.util.List.of(15, 30, 60, 300, 1440, 2880);
+		List<Integer> allowedMinutes = List.of(15, 30, 60, 300, 1440, 2880);
 		
 		if (!allowedMinutes.contains(request.expirationInMinutes())) {
 	        throw new RuntimeException("Invalid expiration time. Allowed values in minutes: 15, 30, 60, 300, 1440, 2880");
@@ -63,9 +64,25 @@ public class UrlService {
 		
 		urlRepository.save(entity);
 		
-		UrlResponseDto response = new UrlResponseDto(request.originalUrl(), shortUrl, expiresAt);
+		UrlResponseDto response = new UrlResponseDto(request.originalUrl(), shortUrl, expiresAt, 0);
 		
 		return response;
+	}
+	
+	public UrlResponseDto getUrlStats(String shortHash) {
+		UrlEntity entity = urlRepository.findByShortHash(shortHash)
+				.orElseThrow(() -> new RuntimeException("Short URL not found."));
+		
+		if (entity.getExpiresAt().isBefore(Instant.now())) {
+	        throw new RuntimeException("This short URL has expired.");
+	    }
+		
+		return new UrlResponseDto(
+	            entity.getOriginalUrl(),
+	            entity.getShortHash(),
+	            entity.getExpiresAt(),
+	            entity.getClickCount()
+	    );
 	}
 	
 	public String getOriginalUrl(String hash) {
